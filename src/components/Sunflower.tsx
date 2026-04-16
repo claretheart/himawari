@@ -19,7 +19,7 @@ const Sunflower: React.FC<Props> = ({ school }) => {
     else if (groupNum === 3) groupStr = "11to15";
     else groupStr = "16to20";
 
-    return `/assets/sunflowers/stage${groupStr}_0${indexInGroup}.png`;
+    return `${import.meta.env.BASE_URL}assets/sunflowers/stage${groupStr}_0${indexInGroup}.png`;
   };
 
   const imageUrl = getImageUrl(school.stage);
