@@ -110,7 +110,7 @@ function App() {
             href="#farm" 
             className={`tab-btn ${activeTab === 'farm' ? 'active' : ''}`}
           >
-            ひまわり畑
+            教室一覧
           </a>
           <a 
             href="#team" 

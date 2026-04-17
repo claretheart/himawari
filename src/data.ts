@@ -24,7 +24,7 @@ export const INITIAL_DATA: SchoolData[] = [
   { id: 'kyoto-10', name: '西院', region: 'Kyoto', target: 500, achievement: 265, rate: 53.0, stage: 11, team: '横尾チーム' },
   { id: 'kyoto-11', name: '東向日', region: 'Kyoto', target: 500, achievement: 342, rate: 68.4, stage: 14, team: '木下チーム' },
   { id: 'kyoto-12', name: '西向日', region: 'Kyoto', target: 500, achievement: 412, rate: 82.4, stage: 17, team: '木下チーム' },
-  { id: 'kyoto-13', name: '長岡天神', region: 'Kyoto', target: 500, achievement: 450, rate: 90.0, stage: 19, team: '木下チーム' }, // NOTE: user list didn't mention Nagaoka-Tenjin in team list explicitly but let's assume it belongs somewhere or was omitted. Wait, let me check the prompt carefully! "木下チーム: 西向日、墨染、大宮、烏丸御池、北山、久我、帷子ノ辻、北野、東向日、西賀茂 (10教室)". Nagaoka-Tenjin is missing here.
+  { id: 'kyoto-13', name: '長岡天神', region: 'Kyoto', target: 500, achievement: 450, rate: 90.0, stage: 19 },
   { id: 'kyoto-14', name: '山科', region: 'Kyoto', target: 500, achievement: 180, rate: 36.0, stage: 8, team: '横尾チーム' },
   { id: 'kyoto-15', name: '墨染', region: 'Kyoto', target: 500, achievement: 95, rate: 19.0, stage: 4, team: '木下チーム' },
   { id: 'kyoto-16', name: '伏見桃山', region: 'Kyoto', target: 500, achievement: 280, rate: 56.0, stage: 12, team: '横尾チーム' },
@@ -55,7 +55,7 @@ export const INITIAL_DATA: SchoolData[] = [
   { id: 'nara-03', name: '学園前', region: 'Nara', target: 500, achievement: 120, rate: 24.0, stage: 5, team: '稲野チーム' },
   { id: 'nara-04', name: '富雄', region: 'Nara', target: 500, achievement: 8, rate: 1.6, stage: 1, team: '稲野チーム' },
   { id: 'nara-05', name: '学研奈良登美ヶ丘', region: 'Nara', target: 500, achievement: 256, rate: 51.2, stage: 11, team: '稲野チーム' },
-  { id: 'nara-06', name: '南生駒', region: 'Nara', target: 500, achievement: 398, rate: 79.6, stage: 16, team: 'その他' }, // NOTE: user list had 38 schools mapped. Let me verify total numbers.
+  { id: 'nara-06', name: '南生駒', region: 'Nara', target: 500, achievement: 398, rate: 79.6, stage: 16 },
 ];
 
 export const calculateStage = (rate: number): number => {

@@ -12,7 +12,9 @@ const TeamRanking: React.FC<Props> = ({ schools }) => {
   const teamsMap = new Map<string, { target: number; achievement: number; schools: SchoolData[] }>();
   
   schools.forEach(school => {
-    const teamName = school.team || 'その他';
+    if (!school.team) return; // チーム未設定の教室は除外する
+    const teamName = school.team;
+    
     if (!teamsMap.has(teamName)) {
       teamsMap.set(teamName, { target: 0, achievement: 0, schools: [] });
     }
