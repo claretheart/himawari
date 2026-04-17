@@ -95,7 +95,7 @@ Error generating stack: `+e.message+`
           from { opacity: 0.5; transform: scale(0.9); }
           to { opacity: 1; transform: scale(1.1); }
         }
-      `})]})},w=({schools:e})=>(0,S.jsxs)(`div`,{className:`sunflower-field`,children:[(0,S.jsx)(`div`,{className:`field-grid`,children:[...e].sort((e,t)=>e.id.localeCompare(t.id)).map(e=>(0,S.jsx)(C,{school:e},e.id))}),(0,S.jsx)(`style`,{children:`
+      `})]})},w=({schools:e,compact:t=!1})=>{let n=[...e].sort((e,t)=>e.id.localeCompare(t.id));return(0,S.jsxs)(`div`,{className:`sunflower-field ${t?`compact`:``}`,children:[(0,S.jsx)(`div`,{className:`field-grid`,children:n.map(e=>(0,S.jsx)(`div`,{className:`sunflower-wrapper`,children:(0,S.jsx)(C,{school:e})},e.id))}),(0,S.jsx)(`style`,{children:`
         .sunflower-field {
           flex: 1;
           overflow-y: auto;
@@ -103,7 +103,11 @@ Error generating stack: `+e.message+`
           display: flex;
           justify-content: center;
           align-items: flex-start;
-          z-index: 20;
+          z-index: 10;
+        }
+        .sunflower-field.compact {
+          padding: 10px;
+          overflow-y: visible;
         }
         .field-grid {
           display: grid;
@@ -112,14 +116,24 @@ Error generating stack: `+e.message+`
           width: 100%;
           max-width: 1400px;
         }
-      `})]}),T=({schools:e})=>{let t=new Map;e.forEach(e=>{if(!e.team)return;let n=e.team;t.has(n)||t.set(n,{target:0,achievement:0,schools:[]});let r=t.get(n);r.target+=e.target,r.achievement+=e.achievement,r.schools.push(e)});let n=Array.from(t.entries()).map(([e,t])=>{let n=t.target>0?t.achievement/t.target*100:0,r=Math.floor(n/5)+1;return r=n>=100?20:n<=0?1:Math.min(r,19),{name:e,rate:n,stage:r,data:t}}).sort((e,t)=>t.rate-e.rate),r=e=>{let t=Math.ceil(e/5),n=(e-1)%5+1,r=``;return r=t===1?`01to05`:t===2?`06to10`:t===3?`11to15`:`16to20`,`/sunflower-board/assets/sunflowers/stage${r}_0${n}.png`},[i,a]=_.useState(n[0]?.name||``);_.useEffect(()=>{!i&&n.length>0&&a(n[0].name)},[n,i]);let o=n.find(e=>e.name===i);return(0,S.jsxs)(`div`,{className:`team-ranking-container`,children:[(0,S.jsx)(`div`,{className:`team-cards-row`,children:n.map((e,t)=>(0,S.jsxs)(`div`,{className:`team-card ${i===e.name?`active`:``}`,onClick:()=>a(e.name),children:[(0,S.jsx)(`div`,{className:`team-card-bg`,style:{backgroundImage:`url(${r(e.stage)})`}}),(0,S.jsxs)(`div`,{className:`team-card-content`,children:[(0,S.jsxs)(`div`,{className:`rank-badge`,children:[t+1,`位`]}),(0,S.jsx)(`h3`,{className:`team-name`,children:e.name}),(0,S.jsxs)(`div`,{className:`team-rate`,children:[e.rate.toFixed(1),(0,S.jsx)(`span`,{className:`percent`,children:`%`})]}),(0,S.jsx)(`div`,{className:`progress-container`,children:(0,S.jsx)(`div`,{className:`progress-bar`,children:(0,S.jsx)(`div`,{className:`progress-fill`,style:{width:`${Math.min(e.rate,100)}%`}})})}),(0,S.jsxs)(`div`,{className:`team-meta`,children:[e.data.schools.length,` 教室`]})]})]},e.name))}),(0,S.jsxs)(`div`,{className:`team-schools-area`,children:[o&&(0,S.jsxs)(`div`,{className:`team-schools-header`,children:[(0,S.jsxs)(`h3`,{children:[o.name,` の所属教室`]}),(0,S.jsxs)(`span`,{className:`avg-badge`,children:[`チーム達成率 `,o.rate.toFixed(1),`%`]})]}),o?(0,S.jsx)(w,{schools:o.data.schools}):(0,S.jsx)(`p`,{children:`チームがありません`})]}),(0,S.jsx)(`style`,{children:`
+        .sunflower-field.compact .field-grid {
+          grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+          gap: 15px;
+        }
+        .sunflower-field.compact .sunflower-wrapper {
+          transform: scale(0.85);
+          transform-origin: top center;
+          height: 180px; /* カード全体の高さを縮小時にクリップしないように調整 */
+        }
+      `})]})},T=({schools:e})=>{let t=new Map;e.forEach(e=>{if(!e.team)return;let n=e.team;t.has(n)||t.set(n,{target:0,achievement:0,schools:[]});let r=t.get(n);r.target+=e.target,r.achievement+=e.achievement,r.schools.push(e)});let n=Array.from(t.entries()).map(([e,t])=>{let n=t.target>0?t.achievement/t.target*100:0,r=Math.floor(n/5)+1;return r=n>=100?20:n<=0?1:Math.min(r,19),{name:e,rate:n,stage:r,data:t}}).sort((e,t)=>t.rate-e.rate),r=e=>{let t=Math.ceil(e/5),n=(e-1)%5+1,r=``;return r=t===1?`01to05`:t===2?`06to10`:t===3?`11to15`:`16to20`,`/sunflower-board/assets/sunflowers/stage${r}_0${n}.png`},[i,a]=_.useState(n[0]?.name||``);_.useEffect(()=>{!i&&n.length>0&&a(n[0].name)},[n,i]);let o=n.find(e=>e.name===i);return(0,S.jsxs)(`div`,{className:`team-ranking-container`,children:[(0,S.jsx)(`div`,{className:`team-cards-row`,children:n.map((e,t)=>(0,S.jsxs)(`div`,{className:`team-card ${i===e.name?`active`:``}`,onClick:()=>a(e.name),children:[(0,S.jsx)(`div`,{className:`team-card-bg`,style:{backgroundImage:`url(${r(e.stage)})`}}),(0,S.jsxs)(`div`,{className:`team-card-content`,children:[(0,S.jsxs)(`div`,{className:`rank-badge`,children:[t+1,`位`]}),(0,S.jsx)(`h3`,{className:`team-name`,children:e.name}),(0,S.jsxs)(`div`,{className:`team-rate`,children:[e.rate.toFixed(1),(0,S.jsx)(`span`,{className:`percent`,children:`%`})]}),(0,S.jsx)(`div`,{className:`progress-container`,children:(0,S.jsx)(`div`,{className:`progress-bar`,children:(0,S.jsx)(`div`,{className:`progress-fill`,style:{width:`${Math.min(e.rate,100)}%`}})})}),(0,S.jsxs)(`div`,{className:`team-meta`,children:[e.data.schools.length,` 教室`]})]})]},e.name))}),(0,S.jsxs)(`div`,{className:`team-schools-area`,children:[o&&(0,S.jsxs)(`div`,{className:`team-schools-header`,children:[(0,S.jsxs)(`h3`,{children:[o.name,` の所属教室`]}),(0,S.jsxs)(`span`,{className:`avg-badge`,children:[`チーム達成率 `,o.rate.toFixed(1),`%`]})]}),o?(0,S.jsx)(w,{schools:o.data.schools,compact:!0}):(0,S.jsx)(`p`,{children:`チームがありません`})]}),(0,S.jsx)(`style`,{children:`
         .team-ranking-container {
           padding: 20px;
-          height: 100%;
-          overflow-y: auto;
+          flex: 1;
           display: flex;
           flex-direction: column;
           gap: 30px;
+          overflow-y: auto;
+          min-height: 0;
         }
 
         .team-cards-row {
@@ -127,6 +141,7 @@ Error generating stack: `+e.message+`
           gap: 20px;
           overflow-x: auto;
           padding-bottom: 10px;
+          flex-shrink: 0;
         }
 
         .team-card {
@@ -234,6 +249,9 @@ Error generating stack: `+e.message+`
           border-radius: 20px;
           padding: 20px;
           flex: 1;
+          display: flex;
+          flex-direction: column;
+          min-height: 0;
         }
 
         .team-schools-header {
@@ -243,6 +261,7 @@ Error generating stack: `+e.message+`
           margin-bottom: 20px;
           padding-bottom: 15px;
           border-bottom: 2px dashed #ddd;
+          flex-shrink: 0;
         }
 
         .team-schools-header h3 {
