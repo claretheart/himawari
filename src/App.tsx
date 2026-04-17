@@ -6,14 +6,13 @@ import SunflowerField from './components/SunflowerField.tsx';
 import TeamRanking from './components/TeamRanking.tsx';
 import RankingPanel from './components/RankingPanel.tsx';
 import { GOOGLE_SHEETS_CSV_URL, fetchAndUpdateData } from './utils/syncData';
-import AdminMenu from './components/AdminMenu.tsx';
-import { Settings, Sun, Cloud } from 'lucide-react';
+import { Sun, Cloud } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 function App() {
   // データは初期値からスタートし、マウント後に外部から取得する
   const [data, setData] = useState<SchoolData[]>(INITIAL_DATA);
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
+
   const [showRanking, setShowRanking] = useState(false);
   
   // URLハッシュによるタブ切り替え
@@ -119,10 +118,6 @@ function App() {
           <a href="#exam-farm" className={`tab-btn ${activeTab === 'exam-farm' ? 'active' : ''}`}>受験生<br/>教室一覧</a>
           <a href="#exam-team" className={`tab-btn ${activeTab === 'exam-team' ? 'active' : ''}`}>受験生<br/>チーム</a>
         </div>
-        <button className="admin-btn" onClick={() => setIsAdminOpen(true)}>
-          <Settings size={20} />
-          <span>管理</span>
-        </button>
       </header>
 
       <main className="content-area">
@@ -139,12 +134,7 @@ function App() {
         </aside>
       </main>
 
-      {isAdminOpen && (
-        <AdminMenu 
-          data={data} 
-          onClose={() => setIsAdminOpen(false)} 
-        />
-      )}
+
       
       <div className="background-decoration">
         <Cloud className="cloud c1" size={100} />
