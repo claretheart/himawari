@@ -101,27 +101,23 @@ function App() {
       <header className="app-header">
         <div className="logo">
           <Sun className="icon-sun" size={32} />
-          <h1>ひまわり成長ボード 2026</h1>
+          <h1>TOMONIひまわり畑</h1>
         </div>
         <div className="stats-bar">
           <div className="stat-item">
-            <span className="stat-label">{mode === 'exam' ? '塾生平均達成率' : '全体平均達成率'}</span>
+            <span className="stat-label">{mode === 'exam' ? '受験生平均達成率' : '全体平均達成率'}</span>
             <span className="stat-value">{stats.avgRate.toFixed(1)}%</span>
           </div>
           <div className="stat-item">
             <span className="stat-label">満開の教室</span>
             <span className="stat-value">{stats.fullBloomCount} 教室</span>
           </div>
-          <div className="stat-item">
-            <span className="stat-label">期間終了まで</span>
-            <span className="stat-value">残り {stats.daysLeft} 日</span>
-          </div>
         </div>
         <div className="tab-controls">
           <a href="#farm" className={`tab-btn ${activeTab === 'farm' ? 'active' : ''}`}>全体<br/>教室一覧</a>
           <a href="#team" className={`tab-btn ${activeTab === 'team' ? 'active' : ''}`}>全体<br/>チーム</a>
-          <a href="#exam-farm" className={`tab-btn ${activeTab === 'exam-farm' ? 'active' : ''}`}>塾生<br/>教室一覧</a>
-          <a href="#exam-team" className={`tab-btn ${activeTab === 'exam-team' ? 'active' : ''}`}>塾生<br/>チーム</a>
+          <a href="#exam-farm" className={`tab-btn ${activeTab === 'exam-farm' ? 'active' : ''}`}>受験生<br/>教室一覧</a>
+          <a href="#exam-team" className={`tab-btn ${activeTab === 'exam-team' ? 'active' : ''}`}>受験生<br/>チーム</a>
         </div>
         <button className="admin-btn" onClick={() => setIsAdminOpen(true)}>
           <Settings size={20} />
