@@ -96,7 +96,7 @@ const TeamRanking: React.FC<Props> = ({ schools }) => {
           </div>
         )}
         {activeTeamData ? (
-          <SunflowerField schools={activeTeamData.data.schools} />
+          <SunflowerField schools={activeTeamData.data.schools} compact={true} />
         ) : (
           <p>チームがありません</p>
         )}
@@ -105,11 +105,12 @@ const TeamRanking: React.FC<Props> = ({ schools }) => {
       <style>{`
         .team-ranking-container {
           padding: 20px;
-          height: 100%;
-          overflow-y: auto;
+          flex: 1;
           display: flex;
           flex-direction: column;
           gap: 30px;
+          overflow-y: auto;
+          min-height: 0;
         }
 
         .team-cards-row {
@@ -117,6 +118,7 @@ const TeamRanking: React.FC<Props> = ({ schools }) => {
           gap: 20px;
           overflow-x: auto;
           padding-bottom: 10px;
+          flex-shrink: 0;
         }
 
         .team-card {
@@ -224,6 +226,9 @@ const TeamRanking: React.FC<Props> = ({ schools }) => {
           border-radius: 20px;
           padding: 20px;
           flex: 1;
+          display: flex;
+          flex-direction: column;
+          min-height: 0;
         }
 
         .team-schools-header {
@@ -233,6 +238,7 @@ const TeamRanking: React.FC<Props> = ({ schools }) => {
           margin-bottom: 20px;
           padding-bottom: 15px;
           border-bottom: 2px dashed #ddd;
+          flex-shrink: 0;
         }
 
         .team-schools-header h3 {

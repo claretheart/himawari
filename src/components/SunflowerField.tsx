@@ -4,17 +4,20 @@ import Sunflower from './Sunflower.tsx';
 
 interface Props {
   schools: SchoolData[];
+  compact?: boolean;
 }
 
-const SunflowerField: React.FC<Props> = ({ schools }) => {
+const SunflowerField: React.FC<Props> = ({ schools, compact = false }) => {
   // Sort schools by region/ID to keep consistent layout
   const sortedSchools = [...schools].sort((a, b) => a.id.localeCompare(b.id));
 
   return (
-    <div className="sunflower-field">
+    <div className={`sunflower-field ${compact ? 'compact' : ''}`}>
       <div className="field-grid">
         {sortedSchools.map((school) => (
-          <Sunflower key={school.id} school={school} />
+          <div className="sunflower-wrapper" key={school.id}>
+            <Sunflower school={school} />
+          </div>
         ))}
       </div>
       <style>{`
@@ -25,7 +28,11 @@ const SunflowerField: React.FC<Props> = ({ schools }) => {
           display: flex;
           justify-content: center;
           align-items: flex-start;
-          z-index: 20;
+          z-index: 10;
+        }
+        .sunflower-field.compact {
+          padding: 10px;
+          overflow-y: visible;
         }
         .field-grid {
           display: grid;
@@ -33,6 +40,15 @@ const SunflowerField: React.FC<Props> = ({ schools }) => {
           gap: 30px;
           width: 100%;
           max-width: 1400px;
+        }
+        .sunflower-field.compact .field-grid {
+          grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+          gap: 15px;
+        }
+        .sunflower-field.compact .sunflower-wrapper {
+          transform: scale(0.85);
+          transform-origin: top center;
+          height: 180px; /* カード全体の高さを縮小時にクリップしないように調整 */
         }
       `}</style>
     </div>
