@@ -42,13 +42,15 @@ const SunflowerField: React.FC<Props> = ({ schools, compact = false }) => {
           max-width: 1400px;
         }
         .sunflower-field.compact .field-grid {
-          grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
           gap: 15px;
         }
         .sunflower-field.compact .sunflower-wrapper {
-          transform: scale(0.85);
+          transform: scale(0.95);
           transform-origin: top center;
-          height: 180px; /* カード全体の高さを縮小時にクリップしないように調整 */
+          height: 195px; /* カード全体の高さを縮小時にクリップしないように調整 */
         }
       `}</style>
     </div>
