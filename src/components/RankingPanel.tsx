@@ -20,9 +20,10 @@ const RankingPanel: React.FC<Props> = ({ schools, mode = 'overall' }) => {
       <div className="ranking-header">
         <Trophy className="icon-trophy" size={24} />
         <h2>ランキング</h2>
+        <span style={{ fontSize: '0.75rem', color: '#9e9e9e', marginLeft: 'auto' }}>上位10教室まで表示</span>
       </div>
       <div className="ranking-list">
-        {rankedSchools.map((school, index) => {
+        {rankedSchools.slice(0, 10).map((school, index) => {
           const rank = index + 1;
           const isTop3 = rank <= 3;
           
