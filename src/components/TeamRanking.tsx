@@ -70,6 +70,7 @@ const TeamRanking: React.FC<Props> = ({ schools, mode = 'overall' }) => {
             onClick={() => setSelectedTeam(team.name)}
           >
             <div className="team-card-bg" style={{ backgroundImage: `url(${getImageUrl(team.stage)})` }}></div>
+            {team.rate >= 100 && <div className="card-sparkles" />}
             <div className="team-card-content">
               <div className="rank-badge">{index + 1}位</div>
               <h3 className="team-name" translate="no">{team.name}</h3>
@@ -164,7 +165,7 @@ const TeamRanking: React.FC<Props> = ({ schools, mode = 'overall' }) => {
 
         .team-card-content {
           position: relative;
-          z-index: 2;
+          z-index: 10;
           padding: 20px;
           display: flex;
           flex-direction: column;
@@ -257,6 +258,25 @@ const TeamRanking: React.FC<Props> = ({ schools, mode = 'overall' }) => {
           border-radius: 12px;
           font-weight: 700;
           font-size: 0.9rem;
+        }
+
+        .card-sparkles {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: url('https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Sparkles.png') no-repeat center center;
+          background-size: 60%;
+          animation: card-glitter 1.5s infinite alternate;
+          pointer-events: none;
+          z-index: 5;
+          opacity: 0.8;
+        }
+
+        @keyframes card-glitter {
+          from { opacity: 0.4; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1.1); }
         }
       `}</style>
     </div>

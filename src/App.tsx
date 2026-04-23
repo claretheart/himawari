@@ -4,6 +4,7 @@ import type { SchoolData } from './data';
 import { INITIAL_DATA, calculateStage } from './data';
 import SunflowerField from './components/SunflowerField.tsx';
 import TeamRanking from './components/TeamRanking.tsx';
+import AreaRanking from './components/AreaRanking.tsx';
 import RankingPanel from './components/RankingPanel.tsx';
 import { GOOGLE_SHEETS_CSV_URL, fetchAndUpdateData } from './utils/syncData';
 import { Sun, Cloud } from 'lucide-react';
@@ -16,10 +17,10 @@ function App() {
   const [showRanking, setShowRanking] = useState(false);
   
   // URLハッシュによるタブ切り替え
-  type TabType = 'farm' | 'team' | 'exam-farm' | 'exam-team';
+  type TabType = 'farm' | 'team' | 'area' | 'exam-farm' | 'exam-team' | 'exam-area';
   const [activeTab, setActiveTab] = useState<TabType>(() => {
     const hash = window.location.hash.replace('#', '');
-    if (['farm', 'team', 'exam-farm', 'exam-team'].includes(hash)) {
+    if (['farm', 'team', 'area', 'exam-farm', 'exam-team', 'exam-area'].includes(hash)) {
       return hash as TabType;
     }
     return 'farm';
@@ -30,7 +31,7 @@ function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
-      setActiveTab((['farm', 'team', 'exam-farm', 'exam-team'].includes(hash) ? hash : 'farm') as TabType);
+      setActiveTab((['farm', 'team', 'area', 'exam-farm', 'exam-team', 'exam-area'].includes(hash) ? hash : 'farm') as TabType);
     };
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
@@ -66,20 +67,48 @@ function App() {
   }, [data, mode]);
 
   const updateData = (newData: SchoolData[]) => {
-    // Check for newly achieved 100%
-    const newlyAchieved = newData.filter(newSchool => {
+    // Helper to check if a group reached 100%
+    const checkGroupNewlyAchieved = (groupField: 'team' | 'area', isExam: boolean) => {
+      const getRate = (schools: SchoolData[]) => {
+        const ach = schools.reduce((sum, s) => sum + (isExam ? (s.examAchievement || 0) : s.achievement), 0);
+        const tar = schools.reduce((sum, s) => sum + (isExam ? (s.examTarget || 0) : s.target), 0);
+        return tar > 0 ? (ach / tar) * 100 : 0;
+      };
+
+      const groups = Array.from(new Set(newData.map(s => s[groupField]).filter(Boolean)));
+      for (const groupName of groups) {
+        const newGroupSchools = newData.filter(s => s[groupField] === groupName);
+        const oldGroupSchools = data.filter(s => s[groupField] === groupName);
+        if (getRate(newGroupSchools) >= 100 && getRate(oldGroupSchools) < 100) return true;
+      }
+      return false;
+    };
+
+    // Check for newly achieved 100% (Schools, Teams, Areas)
+    const schoolNewlyAchieved = newData.some(newSchool => {
       const oldSchool = data.find(s => s.id === newSchool.id);
       const newRate = (newSchool.achievement / newSchool.target) * 100;
-      return newRate >= 100 && (!oldSchool || oldSchool.rate < 100);
+      const newExamRate = (newSchool.examTarget && newSchool.examTarget > 0) ? ((newSchool.examAchievement || 0) / newSchool.examTarget) * 100 : 0;
+      const oldRate = oldSchool ? (oldSchool.achievement / oldSchool.target) * 100 : 0;
+      const oldExamRate = (oldSchool && oldSchool.examTarget && oldSchool.examTarget > 0) ? ((oldSchool.examAchievement || 0) / oldSchool.examTarget) * 100 : 0;
+      return (newRate >= 100 && oldRate < 100) || (newExamRate >= 100 && oldExamRate < 100);
     });
 
-    if (newlyAchieved.length > 0) {
-      confetti({
-        particleCount: 150,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#ffeb3b', '#fbc02d', '#4caf50', '#ffffff']
-      });
+    const anyGroupAchieved = checkGroupNewlyAchieved('team', false) || 
+                             checkGroupNewlyAchieved('team', true) || 
+                             checkGroupNewlyAchieved('area', false) || 
+                             checkGroupNewlyAchieved('area', true);
+
+    if (schoolNewlyAchieved || anyGroupAchieved) {
+      // Delay slightly for UI to update first
+      setTimeout(() => {
+        confetti({
+          particleCount: 150,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#ffeb3b', '#fbc02d', '#4caf50', '#ffffff']
+        });
+      }, 500);
     }
 
     setData(newData.map(d => {
@@ -95,12 +124,23 @@ function App() {
     }));
   };
 
+  const renderContent = () => {
+    if (activeTab.includes('farm')) {
+      return <SunflowerField schools={data} mode={mode} />;
+    } else if (activeTab.includes('team')) {
+      return <TeamRanking schools={data} mode={mode} />;
+    } else {
+      return <AreaRanking schools={data} mode={mode} />;
+    }
+  };
+
   return (
     <div className="app-main">
       <header className="app-header">
         <div className="logo">
-          <Sun className="icon-sun" size={32} />
+          <img src={`${import.meta.env.BASE_URL}assets/TOMONI.png`} alt="TOMONI Logo" className="header-logo" />
           <h1>TOMONIひまわり畑2026</h1>
+          <Sun className="icon-sun" size={32} />
         </div>
         <div className="stats-bar">
           <div className="stat-item">
@@ -115,17 +155,15 @@ function App() {
         <div className="tab-controls">
           <a href="#farm" className={`tab-btn ${activeTab === 'farm' ? 'active' : ''}`}>全体<br/>教室一覧</a>
           <a href="#team" className={`tab-btn ${activeTab === 'team' ? 'active' : ''}`}>全体<br/>チーム</a>
+          <a href="#area" className={`tab-btn ${activeTab === 'area' ? 'active' : ''}`}>全体<br/>エリア</a>
           <a href="#exam-farm" className={`tab-btn ${activeTab === 'exam-farm' ? 'active' : ''}`}>受験生<br/>教室一覧</a>
           <a href="#exam-team" className={`tab-btn ${activeTab === 'exam-team' ? 'active' : ''}`}>受験生<br/>チーム</a>
+          <a href="#exam-area" className={`tab-btn ${activeTab === 'exam-area' ? 'active' : ''}`}>受験生<br/>エリア</a>
         </div>
       </header>
 
       <main className="content-area">
-        {activeTab.includes('farm') ? (
-          <SunflowerField schools={data} mode={mode} />
-        ) : (
-          <TeamRanking schools={data} mode={mode} />
-        )}
+        {renderContent()}
         <aside className={`side-panel ${showRanking ? 'open' : ''}`}>
           <button className="toggle-ranking" onClick={() => setShowRanking(!showRanking)}>
             {showRanking ? '◀ フィールド表示' : '▶ ランキング表示'}
@@ -134,8 +172,6 @@ function App() {
         </aside>
       </main>
 
-
-      
       <div className="background-decoration">
         <Cloud className="cloud c1" size={100} />
         <Cloud className="cloud c2" size={150} />
@@ -143,5 +179,6 @@ function App() {
     </div>
   );
 }
+
 
 export default App;
