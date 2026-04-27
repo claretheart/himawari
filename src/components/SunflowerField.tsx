@@ -32,8 +32,8 @@ const SunflowerField: React.FC<Props> = ({ schools, compact = false, mode = 'ove
           z-index: 10;
         }
         .sunflower-field.compact {
-          padding: 5px 10px 15px 10px;
-          min-height: 210px;
+          padding: 5px 10px 20px 10px;
+          min-height: 240px;
           overflow: visible;
         }
         .field-grid {
@@ -49,7 +49,7 @@ const SunflowerField: React.FC<Props> = ({ schools, compact = false, mode = 'ove
           justify-content: flex-start;
           gap: 10px;
           overflow-x: auto;
-          padding-bottom: 5px;
+          padding-bottom: 18px;
           -webkit-overflow-scrolling: touch;
         }
         

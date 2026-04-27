@@ -335,11 +335,11 @@ const AreaRanking: React.FC<Props> = ({ schools, mode = 'overall' }) => {
         .team-schools-area {
           background: rgba(255, 255, 255, 0.9);
           border-radius: 20px;
-          padding: 15px 20px;
+          padding: 20px 20px 25px 20px;
           flex: 1;
           display: flex;
           flex-direction: column;
-          min-height: 0;
+          min-height: min-content;
         }
 
         .team-schools-header {
