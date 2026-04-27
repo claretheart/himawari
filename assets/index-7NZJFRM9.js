@@ -92,8 +92,8 @@ Error generating stack: `+e.message+`
           z-index: 10;
         }
         .sunflower-field.compact {
-          padding: 5px 10px 15px 10px;
-          min-height: 210px;
+          padding: 5px 10px 20px 10px;
+          min-height: 240px;
           overflow: visible;
         }
         .field-grid {
@@ -109,7 +109,7 @@ Error generating stack: `+e.message+`
           justify-content: flex-start;
           gap: 10px;
           overflow-x: auto;
-          padding-bottom: 5px;
+          padding-bottom: 18px;
           -webkit-overflow-scrolling: touch;
         }
         
@@ -505,11 +505,11 @@ Error generating stack: `+e.message+`
         .team-schools-area {
           background: rgba(255, 255, 255, 0.9);
           border-radius: 20px;
-          padding: 15px 20px;
+          padding: 20px 20px 25px 20px;
           flex: 1;
           display: flex;
           flex-direction: column;
-          min-height: 0;
+          min-height: min-content;
         }
 
         .team-schools-header {
