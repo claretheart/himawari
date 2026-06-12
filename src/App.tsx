@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import './App.css';
 import type { SchoolData } from './data';
 import { INITIAL_DATA, calculateStage } from './data';
@@ -6,6 +6,7 @@ import SunflowerField from './components/SunflowerField.tsx';
 import TeamRanking from './components/TeamRanking.tsx';
 import AreaRanking from './components/AreaRanking.tsx';
 import RankingPanel from './components/RankingPanel.tsx';
+import Fireworks from './components/Fireworks.tsx';
 import { GOOGLE_SHEETS_CSV_URL, fetchAndUpdateData } from './utils/syncData';
 import { Sun, Cloud } from 'lucide-react';
 
@@ -14,6 +15,10 @@ function App() {
   const [data, setData] = useState<SchoolData[]>(INITIAL_DATA);
 
   const [showRanking, setShowRanking] = useState(false);
+  const [showFireworks, setShowFireworks] = useState(false);
+  const fireworksFiredRef = useRef(false);
+  const [showExamFireworks, setShowExamFireworks] = useState(false);
+  const examFireworksFiredRef = useRef(false);
   
   // URLハッシュによるタブ切り替え
   type TabType = 'farm' | 'team' | 'area' | 'exam-farm' | 'exam-team' | 'exam-area';
@@ -62,6 +67,26 @@ function App() {
     };
     loadData();
   }, []);
+
+  // 全体・受験生それぞれ100%達成時に花火を1回だけ発火
+  useEffect(() => {
+    if (!fireworksFiredRef.current) {
+      const totalAchieved = data.reduce((sum, d) => sum + d.achievement, 0);
+      const totalTarget = data.reduce((sum, d) => sum + d.target, 0);
+      if (totalTarget > 0 && totalAchieved / totalTarget >= 1) {
+        fireworksFiredRef.current = true;
+        setShowFireworks(true);
+      }
+    }
+    if (!examFireworksFiredRef.current) {
+      const examAchieved = data.reduce((sum, d) => sum + (d.examAchievement || 0), 0);
+      const examTarget = data.reduce((sum, d) => sum + (d.examTarget || 0), 0);
+      if (examTarget > 0 && examAchieved / examTarget >= 1) {
+        examFireworksFiredRef.current = true;
+        setShowExamFireworks(true);
+      }
+    }
+  }, [data]);
 
   const stats = useMemo(() => {
     const isExam = mode === 'exam';
@@ -127,10 +152,18 @@ function App() {
         </aside>
       </main>
 
-      <div className="background-decoration">
+<div className="background-decoration">
         <Cloud className="cloud c1" size={100} />
         <Cloud className="cloud c2" size={150} />
       </div>
+
+      {showFireworks && <Fireworks onDone={() => setShowFireworks(false)} subtitle="全教室が満開になりました！" />}
+      {showExamFireworks && (
+        <Fireworks
+          onDone={() => setShowExamFireworks(false)}
+          title="TOMONI受験生達成！"
+        />
+      )}
     </div>
   );
 }
